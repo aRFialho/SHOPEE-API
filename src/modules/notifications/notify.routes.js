@@ -1,11 +1,8 @@
-express = require('express');
+const express = require('express');
 const router = express.Router();
-const notifyController = require('./notifyController');
+const notifyController = require('./notify.controller');
 
-// Webhook público utilizado pela Shopee
 router.post('/webhook', notifyController.receiveWebhook);
-
-// Lista notificações armazenadas (útil para debug interno)
 router.get('/', notifyController.listNotifications);
 
 module.exports = router;

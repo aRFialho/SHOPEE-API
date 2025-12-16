@@ -1,4 +1,4 @@
-const flashSaleService = require('./flashSaleService');
+const flashSaleService = require('./flashSale.service');
 
 exports.listFlashSales = async (req, res) => {
     try {
