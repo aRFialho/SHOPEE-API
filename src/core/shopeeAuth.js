@@ -1,26 +1,44 @@
 const crypto = require("crypto");
-require("dotenv").config();
 
-function generateAuth(path, params = {}) {
-    const timestamp = Math.floor(Date.now() / 1000);
+class ShopeeAuth {
+    constructor() {
+        this.partnerId = process.env.SHOPEE_PARTNER_ID;
+        this.partnerKey = process.env.SHOPEE_PARTNER_KEY;
+        this.shopId = process.env.SHOPEE_SHOP_ID;
+    }
 
-    const partnerId = process.env.SHOPPEE_PARTNER_ID;
-    const partnerKey = process.env.SHOPPEE_PARTNER_KEY;
-    const shopId = process.env.SHOPPEE_SHOP_ID;
+    generateTimestamp() {
+        return Math.floor(Date.now() / 1000);
+    }
 
-    const baseString = `${partnerId}${path}${timestamp}${shopId}`;
+    generateSignature(path, timestamp, accessToken = "", shopId = this.shopId) {
+        const baseString = `${this.partnerId}${path}${timestamp}${accessToken}${shopId}`;
 
-    const sign = crypto
-        .createHmac("sha256", partnerKey)
-        .update(baseString)
-        .digest("hex");
+        return crypto
+            .createHmac("sha256", this.partnerKey)
+            .update(baseString)
+            .digest("hex");
+    }
 
-    return {
-        timestamp,
-        sign,
-        partner_id: partnerId,
-        shop_id: shopId
-    };
+    getAuthHeaders(path, accessToken = "", shopId = this.shopId) {
+        const timestamp = this.generateTimestamp();
+
+        const sign = this.generateSignature(
+            path,
+            timestamp,
+            accessToken,
+            shopId
+        );
+
+        return {
+            "Content-Type": "application/json",
+            "Authorization": sign,
+            "X-Shopee-Timestamp": timestamp,
+            "X-Shopee-Partner-Id": this.partnerId,
+            "X-Shopee-Shop-Id": shopId,
+            "X-Shopee-Access-Token": accessToken
+        };
+    }
 }
 
-module.exports = generateAuth;
+module.exports = new ShopeeAuth();

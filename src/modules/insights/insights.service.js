@@ -1,30 +1,13 @@
-axios = require('axios');
-const crypto = require('crypto');
+const http = require("../../core/httpClient");
 
-class InsightsService {
+exports.getProductMetrics = async (itemId) => {
+    const path = "/product/get_item_base_info";
 
-    async getProductInsights(itemId) {
-        return {
-            item_id: itemId,
-            views: 0,
-            sold: 0,
-            rating: 0,
-            conversion_rate: 0
-        };
-    }
+    const params = {
+        item_id_list: [itemId]
+    };
 
-    async getShopInsights() {
-        return {
-            total_sales: 0,
-            total_views: 0,
-            total_products: 0,
-            shop_rating: 0
-        };
-    }
+    const response = await http.get(path, params);
 
-    signRequest(data) {
-        return 'placeholder-hmac';
-    }
-}
-
-module.exports = new InsightsService();
+    return response.data;
+};

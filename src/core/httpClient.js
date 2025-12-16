@@ -1,8 +1,22 @@
 const axios = require("axios");
-require("dotenv").config();
+const shopeeAuth = require("./shopeeAuth");
 
-const api = axios.create({
-    baseURL: process.env.SHOPPEE_BASE_URL
-});
+class HttpClient {
+    async get(path, params = {}, accessToken = "") {
+        const url = process.env.SHOPEE_BASE_URL + path;
 
-module.exports = api;
+        const headers = shopeeAuth.getAuthHeaders(path, accessToken);
+
+        return axios.get(url, { params, headers });
+    }
+
+    async post(path, body = {}, accessToken = "") {
+        const url = process.env.SHOPEE_BASE_URL + path;
+
+        const headers = shopeeAuth.getAuthHeaders(path, accessToken);
+
+        return axios.post(url, body, { headers });
+    }
+}
+
+module.exports = new HttpClient();

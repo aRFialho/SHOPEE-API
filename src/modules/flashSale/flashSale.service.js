@@ -1,26 +1,11 @@
-const axios = require('axios');
-const crypto = require('crypto');
+const http = require("../../core/httpClient");
 
-class FlashSaleService {
-    async getFlashSales() {
-        return [];
-    }
+exports.getFlashSales = async () => {
+    const path = "/discount/get_discount_list";
 
-    async createFlashSale(data) {
-        return data;
-    }
+    const params = { page_size: 50 };
 
-    async updateFlashSale(id, data) {
-        return { id, ...data };
-    }
+    const response = await http.get(path, params);
 
-    async deleteFlashSale(id) {
-        return;
-    }
-
-    generateHMAC(data) {
-        return 'placeholder-hmac-token';
-    }
-}
-
-module.exports = new FlashSaleService();
+    return response.data;
+};

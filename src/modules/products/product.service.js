@@ -1,47 +1,26 @@
-const api = require("../../core/httpClient");
-const auth = require("../../core/shopeeAuth");
+const http = require("../../core/httpClient");
 
-class ProductService {
+exports.getProductList = async () => {
+    const path = "/product/get_item_list";
 
-    async getAll() {
-        const path = "/product/get_item_list";
-        const authParams = auth(path);
+    const params = {
+        offset: 0,
+        page_size: 50,
+    };
 
-        const { data } = await api.get(path, {
-            params: {
-                ...authParams,
-                page_size: 100
-            }
-        });
+    const response = await http.get(path, params);
 
-        return data;
-    }
+    return response.data;
+};
 
-    async getItemDetail(itemId) {
-        const path = "/product/get_item_base_info";
-        const authParams = auth(path);
+exports.getProductDetail = async (itemId) => {
+    const path = "/product/get_item_base_info";
 
-        const { data } = await api.get(path, {
-            params: {
-                ...authParams,
-                item_id_list: JSON.stringify([itemId])
-            }
-        });
+    const params = {
+        item_id_list: [itemId]
+    };
 
-        return data;
-    }
+    const response = await http.get(path, params);
 
-    async updatePrice(itemId, price) {
-        const path = "/product/update_price";
-        const authParams = auth(path);
-
-        const { data } = await api.post(path, {
-            item_id: itemId,
-            price
-        }, { params: authParams });
-
-        return data;
-    }
-}
-
-module.exports = new ProductService();
+    return response.data;
+};

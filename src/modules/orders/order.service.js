@@ -1,44 +1,28 @@
-const api = require("../../core/httpClient");
-const auth = require("../../core/shopeeAuth");class OrderService {async getOrdersByStatus(status) {
+const http = require("../../core/httpClient");
+
+exports.getOrderList = async () => {
     const path = "/order/get_order_list";
-    const authParams = auth(path);
 
-    const { data } = await api.get(path, {
-        params: {
-            ...authParams,
-            order_status: status,
-            page_size: 100
-        }
-    });
+    const params = {
+        time_range_field: "create_time",
+        time_from: Math.floor(Date.now() / 1000) - 86400 * 7, 
+        time_to: Math.floor(Date.now() / 1000),
+        page_size: 50,
+    };
 
-    return data;
-}
+    const response = await http.get(path, params);
 
-async getOrderDetail(orderSn) {
+    return response.data;
+};
+
+exports.getOrderDetail = async (orderSnList) => {
     const path = "/order/get_order_detail";
-    const authParams = auth(path);
 
-    const { data } = await api.get(path, {
-        params: {
-            ...authParams,
-            order_sn_list: JSON.stringify([orderSn])
-        }
-    });
+    const params = {
+        order_sn_list: orderSnList
+    };
 
-    return data;
-}
+    const response = await http.get(path, params);
 
-async getOrderEscrow(orderSn) {
-    const path = "/order/get_escrow_detail";
-    const authParams = auth(path);
-
-    const { data } = await api.get(path, {
-        params: {
-            ...authParams,
-            order_sn: orderSn
-        }
-    });
-
-    return data;
-}
-}module.exports = new OrderService();
+    return response.data;
+};
