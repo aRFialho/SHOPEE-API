@@ -5,7 +5,7 @@ exports.getProductList = async () => {
 
     const params = {
         offset: 0,
-        page_size: 50,
+        page_size: 50
     };
 
     const response = await http.get(path, params);

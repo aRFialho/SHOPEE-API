@@ -10,7 +10,7 @@ const flashSaleRoutes = require("./modules/flashSale/flashSale.routes");
 const notifyRoutes = require("./modules/notifications/notify.routes");
 const insightsRoutes = require("./modules/insights/insights.routes");
 
-// Roteamento principal da API
+// Rotas
 router.use("/products", productRoutes);
 router.use("/orders", orderRoutes);
 router.use("/discounts", discountRoutes);

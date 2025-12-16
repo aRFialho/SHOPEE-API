@@ -1,21 +1,23 @@
-require("express");
+require("dotenv").config();
+const crypto = require("crypto");
+const express = require("express");
 const routes = require("./routes");
 require("dotenv").config();
 
 const app = express();
 
-// Middleware para JSON
+// Middleware JSON
 app.use(express.json());
 
-// CORS (opcional — útil para frontend externo)
+// CORS opcional
 try {
     const cors = require("cors");
     app.use(cors());
 } catch (err) {
-    console.log("CORS não instalado, continuando sem ele.");
+    console.log("CORS não instalado, seguindo normalmente.");
 }
 
-// Rota de saúde (necessária no Render)
+// Health check (Render e monitoramento)
 app.get("/health", (req, res) => {
     res.status(200).send("OK");
 });
