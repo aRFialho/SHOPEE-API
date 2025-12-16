@@ -1,11 +1,22 @@
-const router = require("express").Router();
+const express = require("express");
+const router = express.Router();
 
-router.use("/products", require("./modules/products/product.routes"));
-router.use("/orders", require("./modules/orders/order.routes"));
-router.use("/discounts", require("./modules/discounts/discount.routes"));
-router.use("/campaigns", require("./modules/campaigns/campaign.routes"));
-router.use("/flash", require("./modules/flashSale/flash.routes"));
-router.use("/notifications", require("./modules/notifications/notify.routes"));
-router.use("/insights", require("./modules/insights/insights.routes"));
+// Importação dos módulos
+const productRoutes = require("./modules/products/product.routes");
+const orderRoutes = require("./modules/orders/order.routes");
+const discountRoutes = require("./modules/discounts/discount.routes");
+const campaignRoutes = require("./modules/campaigns/campaign.routes");
+const flashSaleRoutes = require("./modules/flashSale/flashSale.routes");
+const notifyRoutes = require("./modules/notifications/notify.routes");
+const insightsRoutes = require("./modules/insights/insights.routes");
+
+// Roteamento principal da API
+router.use("/products", productRoutes);
+router.use("/orders", orderRoutes);
+router.use("/discounts", discountRoutes);
+router.use("/campaigns", campaignRoutes);
+router.use("/flashsale", flashSaleRoutes);
+router.use("/notifications", notifyRoutes);
+router.use("/insights", insightsRoutes);
 
 module.exports = router;
