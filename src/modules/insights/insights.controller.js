@@ -1,4 +1,4 @@
-const insightsService = require('./insightsService');
+const insightsService = require('./insights.service');
 
 class InsightsController {
     async getProductInsights(req, res) {
